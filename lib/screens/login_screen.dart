@@ -29,7 +29,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  "Phone number",
+                  "Email",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
@@ -42,8 +42,8 @@ class LoginScreen extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.call),
-                    hintText: "Enter your phone number",
+                    prefixIcon: Icon(Icons.email),
+                    hintText: "Enter your Email",
                     hintStyle: TextStyle(color: Colors.grey),
                     contentPadding: EdgeInsets.all(4),
                     border: OutlineInputBorder(
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  "Phone number",
+                  "Email",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,

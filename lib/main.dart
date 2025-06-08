@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:securepass/screens/login_screen.dart';
+import 'package:securepass/screens/signup_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginScreen(),
+      home: const SignupScreen(),
     );
   }
 }
