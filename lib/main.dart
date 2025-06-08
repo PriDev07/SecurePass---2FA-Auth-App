@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:securepass/screens/login_screen.dart';
+import 'package:securepass/screens/otp_screen.dart';
 import 'package:securepass/screens/signup_screen.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SignupScreen(),
+      home: OtpScreen(email: "Lohaniprince72@gmail.com"),
     );
   }
 }
