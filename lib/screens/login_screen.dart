@@ -1,11 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:securepass/screens/otp_screen.dart';
+import 'package:securepass/services/auth_service.dart';
+import 'package:securepass/services/mail_service.dart';
 import 'package:securepass/widgets/custom_button.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
   Widget build(BuildContext context) {
+    String ErrorMsg = "";
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passController = TextEditingController();
+    Future<void> SignInWithEmailPass() async {
+      try {
+        print(
+          "signing in with ${_emailController.text} and ${_passController.text}",
+        );
+        await fb().signInwithemailPass(
+          email: _emailController.text,
+          pass: _passController.text,
+        );
+        MailService().sendOtpEmail(_emailController.text, "345123");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => OtpScreen(email: "lohaniprince"),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          ErrorMsg = e.message!;
+        });
+        print(ErrorMsg);
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -41,6 +77,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     hintText: "Enter your Email",
@@ -68,6 +105,7 @@ class LoginScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
+                  controller: _passController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     hintStyle: TextStyle(color: Colors.grey),
@@ -96,7 +134,10 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              GestureDetector(child: CustomButton(value: "Log in")),
+              GestureDetector(
+                onTap: SignInWithEmailPass,
+                child: CustomButton(value: "Log in"),
+              ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
