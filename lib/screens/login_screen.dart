@@ -13,35 +13,61 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String ErrorMsg = "";
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
+  Future<void> SignInWithEmailPass() async {
+    try {
+      print(
+        "signing in with ${_emailController.text} and ${_passController.text}",
+      );
+      await fb().signInwithemailPass(
+        email: _emailController.text,
+        pass: _passController.text,
+      );
+      MailService().sendOtpEmail(_emailController.text, "345123");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (builder) => OtpScreen(
+                email: _emailController.text,
+                pass: _passController.text,
+              ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        ErrorMsg = e.message!;
+      });
+      print(ErrorMsg);
+    }
+  }
+
+  Future<void> createUserWithEmailPass() async {
+    try {
+      await fb().checkotp(email: _emailController.text, enteredOtp: '1302');
+      MailService().sendOtpEmail(_emailController.text, "1302");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder:
+              (builder) => OtpScreen(
+                email: _emailController.text,
+                pass: _passController.text,
+              ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        ErrorMsg = e.message!;
+      });
+      print(ErrorMsg);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String ErrorMsg = "";
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passController = TextEditingController();
-    Future<void> SignInWithEmailPass() async {
-      try {
-        print(
-          "signing in with ${_emailController.text} and ${_passController.text}",
-        );
-        await fb().signInwithemailPass(
-          email: _emailController.text,
-          pass: _passController.text,
-        );
-        MailService().sendOtpEmail(_emailController.text, "345123");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (builder) => OtpScreen(email: "lohaniprince"),
-          ),
-        );
-      } on FirebaseAuthException catch (e) {
-        setState(() {
-          ErrorMsg = e.message!;
-        });
-        print(ErrorMsg);
-      }
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -135,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 30),
               GestureDetector(
-                onTap: SignInWithEmailPass,
+                onTap: createUserWithEmailPass,
                 child: CustomButton(value: "Log in"),
               ),
               SizedBox(height: 20),
