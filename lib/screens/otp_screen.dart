@@ -57,7 +57,6 @@ class _OtpScreenState extends State<OtpScreen> {
           email: widget.email,
           pass: widget.pass,
         );
-        // Navigate to home or next screen
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -135,7 +134,7 @@ class _OtpScreenState extends State<OtpScreen> {
               const SizedBox(height: 5),
               GestureDetector(
                 onTap: () {
-                  // you can trigger resend OTP here
+                  // This feature will come soon
                 },
                 child: Text(
                   "Resend",

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:securepass/screens/otp_screen.dart';
@@ -16,38 +18,23 @@ class _LoginScreenState extends State<LoginScreen> {
   String ErrorMsg = "";
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passController = TextEditingController();
+  final Random _random = Random();
+  int _randomNumber = 0;
+  void generateRandomNumber() {
+    _randomNumber = 1000 + _random.nextInt(10000);
+  }
+
   Future<void> SignInWithEmailPass() async {
     try {
       print(
         "signing in with ${_emailController.text} and ${_passController.text}",
       );
+      generateRandomNumber();
       await fb().signInwithemailPass(
         email: _emailController.text,
         pass: _passController.text,
       );
-      MailService().sendOtpEmail(_emailController.text, "345123");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder:
-              (builder) => OtpScreen(
-                email: _emailController.text,
-                pass: _passController.text,
-              ),
-        ),
-      );
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        ErrorMsg = e.message!;
-      });
-      print(ErrorMsg);
-    }
-  }
-
-  Future<void> createUserWithEmailPass() async {
-    try {
-      await fb().checkotp(email: _emailController.text, enteredOtp: '1302');
-      MailService().sendOtpEmail(_emailController.text, "1302");
+      MailService().sendOtpEmail(_emailController.text, _randomNumber.toString());
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -161,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 30),
               GestureDetector(
-                onTap: createUserWithEmailPass,
+                onTap: SignInWithEmailPass,
                 child: CustomButton(value: "Log in"),
               ),
               SizedBox(height: 20),

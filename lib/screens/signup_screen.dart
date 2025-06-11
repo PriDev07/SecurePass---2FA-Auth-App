@@ -1,11 +1,54 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:securepass/screens/otp_screen.dart';
+import 'package:securepass/services/auth_service.dart';
+import 'package:securepass/services/mail_service.dart';
 import 'package:securepass/widgets/custom_button.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  String ErrorMsg = "";
+  final Random _random = Random();
+  int _randomNumber = 0;
+  @override
   Widget build(BuildContext context) {
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passController = TextEditingController();
+    void generateRandomNumber() {
+      _randomNumber = 1000 + _random.nextInt(10000);
+    }
+
+    Future<void> createUserWithEmailPass() async {
+      try {
+        generateRandomNumber();
+        await fb().checkotp(email: _emailController.text, enteredOtp: _randomNumber.toString());
+        MailService().sendOtpEmail(_emailController.text, _randomNumber.toString());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (builder) => OtpScreen(
+                  email: _emailController.text,
+                  pass: _passController.text,
+                ),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        setState(() {
+          ErrorMsg = e.message!;
+        });
+        print(ErrorMsg);
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -48,9 +91,38 @@ class SignupScreen extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 8),
                 child: TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.email),
                     hintText: "Enter your Email",
+                    hintStyle: TextStyle(color: Colors.grey),
+                    contentPadding: EdgeInsets.all(4),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  "",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: 5),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                child: TextField(
+                  controller: _passController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.email),
+                    hintText: "password",
                     hintStyle: TextStyle(color: Colors.grey),
                     contentPadding: EdgeInsets.all(4),
                     border: OutlineInputBorder(
