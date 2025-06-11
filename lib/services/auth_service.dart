@@ -26,6 +26,13 @@ class fb {
       password: pass,
     );
   }
+
+  Future<void> addOtp({required String email, required String Otp}) async {
+    await _firebaseFirestore.collection('verifications').doc(email).set({
+      'otp': Otp,
+    });
+  }
+
   // Otp checking function
   Future<bool> checkotp({
     required String email,
