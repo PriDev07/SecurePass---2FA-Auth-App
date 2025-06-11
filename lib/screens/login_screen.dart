@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder:
               (builder) => OtpScreen(
                 email: _emailController.text,
-                pass: _passController.text,
+                pass: _passController.text, authType: AuthType.login,
               ),
         ),
       );

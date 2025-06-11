@@ -3,11 +3,18 @@ import 'package:securepass/screens/profile_screen.dart';
 import 'package:securepass/services/auth_service.dart';
 import 'package:securepass/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+enum AuthType {
+  signup,
+  login,
+}
+
 
 class OtpScreen extends StatefulWidget {
   String email;
   String pass;
-  OtpScreen({super.key, required this.email, required this.pass});
+  final AuthType authType;
+
+  OtpScreen({super.key, required this.email, required this.pass,required this.authType});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -36,39 +43,51 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   Future<void> verifyOtp() async {
-    String otp = _controllers.map((c) => c.text).join();
+  String otp = _controllers.map((c) => c.text).join();
 
-    if (otp.length != 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter complete 4-digit OTP")),
-      );
-      return;
-    }
+  if (otp.length != 4) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Please enter complete 4-digit OTP")),
+    );
+    return;
+  }
 
-    bool isValid = await fb().checkotp(email: widget.email, enteredOtp: otp);
+  bool isValid = await fb().checkotp(email: widget.email, enteredOtp: otp);
 
-    if (isValid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("OTP verified! Logging in...")),
-      );
+  if (isValid) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("OTP verified! Logging in...")),
+    );
 
-      try {
+    try {
+      if (widget.authType == AuthType.signup) {
         await fb().createUserWithEmailAndPassword(
           email: widget.email,
           pass: widget.pass,
         );
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login failed: $e")),
+      } else {
+        await fb().signInwithemailPass(
+          email: widget.email,
+          pass: widget.pass,
         );
       }
-    } else {
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileScreen()),
+      );
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Invalid OTP")),
+        SnackBar(content: Text("Authentication failed: $e")),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Invalid OTP")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

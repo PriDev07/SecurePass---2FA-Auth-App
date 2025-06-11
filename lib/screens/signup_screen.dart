@@ -49,7 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
             builder:
                 (builder) => OtpScreen(
                   email: _emailController.text,
-                  pass: _passController.text,
+                  pass: _passController.text, authType: AuthType.signup,
                 ),
           ),
         );
