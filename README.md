@@ -107,4 +107,4 @@ node index.js
 
 ## 📬 Contact
 
-Made with ❤️ by [Code Savvy](https://github.com/PriDev07)
+Made with ❤️ by [PriDev07](https://pridev07.xyz)
