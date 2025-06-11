@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:securepass/screens/login_screen.dart';
 import 'package:securepass/screens/otp_screen.dart';
 import 'package:securepass/services/auth_service.dart';
 import 'package:securepass/services/mail_service.dart';
@@ -49,7 +50,8 @@ class _SignupScreenState extends State<SignupScreen> {
             builder:
                 (builder) => OtpScreen(
                   email: _emailController.text,
-                  pass: _passController.text, authType: AuthType.signup,
+                  pass: _passController.text,
+                  authType: AuthType.signup,
                 ),
           ),
         );
@@ -160,6 +162,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   SizedBox(width: 10),
                   GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
                     child: Text(
                       "Log in",
                       style: TextStyle(color: Colors.blueAccent, fontSize: 16),
