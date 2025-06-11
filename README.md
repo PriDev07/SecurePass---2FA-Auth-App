@@ -107,10 +107,4 @@ node index.js
 
 ## 📬 Contact
 
-Made with ❤️ by [Code Savvy](https://github.com/yourusername)
-
----
-
-## 🪪 License
-
-This project is licensed under the [MIT License](LICENSE).
+Made with ❤️ by [Code Savvy](https://github.com/PriDev07)
