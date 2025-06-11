@@ -18,19 +18,31 @@ class _SignupScreenState extends State<SignupScreen> {
   String ErrorMsg = "";
   final Random _random = Random();
   int _randomNumber = 0;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
-    TextEditingController _passController = TextEditingController();
     void generateRandomNumber() {
-      _randomNumber = 1000 + _random.nextInt(10000);
+      setState(() {
+        _randomNumber = 1000 + _random.nextInt(9000);
+      });
     }
 
     Future<void> createUserWithEmailPass() async {
       try {
         generateRandomNumber();
-        await fb().checkotp(email: _emailController.text, enteredOtp: _randomNumber.toString());
-        MailService().sendOtpEmail(_emailController.text, _randomNumber.toString());
+        await MailService().sendOtpEmail(
+          _emailController.text,
+          _randomNumber.toString(),
+        );
+        await fb().addOtp(
+          email: _emailController.text,
+          Otp: _randomNumber.toString(),
+        );
+        await fb().checkotp(
+          email: _emailController.text,
+          enteredOtp: _randomNumber.toString(),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -133,7 +145,10 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
 
               SizedBox(height: 30),
-              GestureDetector(child: CustomButton(value: "Continue")),
+              GestureDetector(
+                onTap: createUserWithEmailPass,
+                child: CustomButton(value: "Continue"),
+              ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

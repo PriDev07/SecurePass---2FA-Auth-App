@@ -30,11 +30,18 @@ class _LoginScreenState extends State<LoginScreen> {
         "signing in with ${_emailController.text} and ${_passController.text}",
       );
       generateRandomNumber();
+      MailService().sendOtpEmail(
+        _emailController.text,
+        _randomNumber.toString(),
+      );
+      await fb().addOtp(
+        email: _emailController.text,
+        Otp: _randomNumber.toString(),
+      );
       await fb().signInwithemailPass(
         email: _emailController.text,
         pass: _passController.text,
       );
-      MailService().sendOtpEmail(_emailController.text, _randomNumber.toString());
       Navigator.push(
         context,
         MaterialPageRoute(
