@@ -27,9 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> SignInWithEmailPass() async {
     try {
-      print(
-        "signing in with ${_emailController.text} and ${_passController.text}",
-      );
       generateRandomNumber();
       MailService().sendOtpEmail(
         _emailController.text,
