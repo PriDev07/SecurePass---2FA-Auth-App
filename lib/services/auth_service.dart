@@ -7,6 +7,7 @@ class fb {
   CollectionReference otps = FirebaseFirestore.instance.collection(
     'verifications',
   );
+  // Sign in function
   Future<void> signInwithemailPass({
     required String email,
     required String pass,
@@ -16,7 +17,7 @@ class fb {
       password: pass,
     );
   }
-
+  // Sign up function
   Future<void> createUserWithEmailAndPassword({
     required String email,
     required String pass,
