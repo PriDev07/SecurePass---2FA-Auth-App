@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passController = TextEditingController();
   final Random _random = Random();
   int _randomNumber = 0;
+  // OTP generation function
   void generateRandomNumber() {
     _randomNumber = 1000 + _random.nextInt(9000);
   }
