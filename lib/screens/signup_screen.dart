@@ -23,12 +23,13 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController _passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    //OTP generation method
     void generateRandomNumber() {
       setState(() {
         _randomNumber = 1000 + _random.nextInt(9000);
       });
     }
-
+    // Create user function
     Future<void> createUserWithEmailPass() async {
       try {
         generateRandomNumber();
