@@ -41,7 +41,7 @@ class _OtpScreenState extends State<OtpScreen> {
       FocusScope.of(context).requestFocus(_focusNodes[index + 1]);
     }
   }
-
+//OTP verification method
   Future<void> verifyOtp() async {
   String otp = _controllers.map((c) => c.text).join();
 
