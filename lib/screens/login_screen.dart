@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void generateRandomNumber() {
     _randomNumber = 1000 + _random.nextInt(9000);
   }
-
+  // Sign in using email method
   Future<void> SignInWithEmailPass() async {
     try {
       generateRandomNumber();
