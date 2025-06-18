@@ -39,7 +39,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "You have successfully signed in using 2FA.",
+                  "You have successfully signed in SecurePass using 2FA.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
