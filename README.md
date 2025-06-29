@@ -1,5 +1,6 @@
 
 # 🔐 SecurePass - Email & OTP Authentication System
+
 SecurePass is a two-step authentication system built using **Flutter**, **Firebase Auth**, **Firestore**, and a **custom Node.js mail server**. It adds an extra layer of security by verifying user identity via an OTP sent to their email.
 
 ---
